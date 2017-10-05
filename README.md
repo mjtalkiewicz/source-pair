@@ -1,2 +1,2 @@
 # source-pair
-Generate .c and .h file pairs.
+Generate new .c and .h file pairs.
