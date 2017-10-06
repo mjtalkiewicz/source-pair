@@ -37,18 +37,29 @@ end
 
 function load_header_text(path)
 	local year = os.date("%Y", os.time())
-	local f = assert(io.open(path, "r")) -- Project Header File
-	local header_text = f:read("a")
-	f:close()
+	local header_text = nil
 
-	return string.gsub(header_text, "<REPLACE_WITH_YEAR>", year)
+	local f = io.open(path, "r") -- Project Header File
+	if nil ~= f then
+		header_text = f:read("a")
+		header_text = string.gsub(header_text, "<REPLACE_WITH_YEAR>", year)
+		f:close()
+	end
+
+	return header_text
+end
+
+function write_header_to_file(f, text)
+	if nil ~= text then
+		f:write(text)
+	end
 end
 
 function write_header_file(name, text)
 	local f = assert(io.open(name .. ".h", "w")) -- C header file
 	local include_name = name:upper() .. "_H"
 
-	f:write(text)
+	write_header_to_file(f, text)
 
 	f:write("\n#ifndef " .. include_name)
 	f:write("\n#define " .. include_name)
@@ -64,7 +75,8 @@ function write_source_file(name, text)
 	local f = assert(io.open(name .. ".c", "w")) -- C header file
 	local include_name = name .. ".h"
 
-	f:write(text)
+	write_header_to_file(f, text)
+
 	f:write("\n#include \"" .. include_name .. "\"")
 	f:write("\n#include <assert.h>") -- Good programers know
 
