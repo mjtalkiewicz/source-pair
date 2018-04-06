@@ -72,13 +72,13 @@ function write_header_file(name, text)
 end
 
 function write_source_file(name, text)
-	local f = assert(io.open(name .. ".c", "w")) -- C header file
+	local f = assert(io.open(name .. ".c", "w")) -- C source file
 	local include_name = name .. ".h"
 
 	write_header_to_file(f, text)
 
 	f:write("\n#include \"" .. include_name .. "\"")
-	f:write("\n#include <assert.h>") -- Good programers know
+	f:write("\n#include <assert.h>")
 
 	f:write("\n\n\n")
 	f:flush()
